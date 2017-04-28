@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(xgboost CONFIG)
+
+if(@XGBOOSTER_SERIALIZE_WITH_BOOST@)
+  find_dependency(boost-pba CONFIG)
+endif()
+
+if(@XGBOOSTER_SERIALIZE_WITH_CEREAL@)
+  find_dependency(cereal CONFIG REQUIRED)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/@targets_export_name@.cmake")
+check_required_components("@PROJECT_NAME@")
