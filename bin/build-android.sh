@@ -1,3 +1,4 @@
 #!/bin/bash
 
-build.py --toolchain android-ndk-r10e-api-16-armeabi-v7a-neon-clang-35 --verbose --fwd HUNTER_CONFIGURATION_TYPES=Release ANDROID=TRUE --clear
+TOOLCHAIN=android-ndk-r10e-api-19-armeabi-v7a-neon-hid-sections
+build.py --toolchain ${TOOLCHAIN} --verbose --fwd HUNTER_CONFIGURATION_TYPES=Release ANDROID=TRUE --clear

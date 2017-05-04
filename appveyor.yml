@@ -44,9 +44,8 @@ install:
   # * http://www.appveyor.com/docs/installed-software#qt
   - cmd: set MINGW_PATH=C:\Qt\Tools\mingw492_32\bin
 
-build_script:
-  - cmd: python %POLLY_SOURCE_DIR%\bin\build.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose --test
+  # MSYS2 location
+  - cmd: set MSYS_PATH=C:\msys64\usr\bin    
 
-artifacts:
-  - path: _builds\*\ogles_gpgpu-*.tar.gz
-    name: Releases
+build_script:
+  - cmd: python %POLLY_SOURCE_DIR%\bin\polly.py --toolchain "%TOOLCHAIN%" --config "%CONFIG%" --verbose --test

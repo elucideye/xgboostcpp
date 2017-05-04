@@ -1,4 +1,5 @@
 #include "xgboostcpp/XGBooster.h"
+#include "xgboostcpp/stdlib_string.h" // for android std additions
 #include "xgboostcpp/Booster.h"
 #include "xgboostcpp/XGBoosterImpl.h"
 
