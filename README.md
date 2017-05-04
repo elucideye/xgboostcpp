@@ -1,5 +1,7 @@
-# xgbooster
+# xgboostcpp
 Simple C++ interface for xgboost with cross platform and size reduce serialization
+
+This is a work in progress, and is posted initially as a reference for using the xgboost C++ API.
 
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-brightgreen.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause)
 [![HUNTER](https://img.shields.io/badge/hunter-v0.18.44-blue.svg)](http://github.com/ruslo/hunter)
