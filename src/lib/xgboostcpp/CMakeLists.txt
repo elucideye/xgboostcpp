@@ -53,8 +53,11 @@ if(NOT is_ios)
 endif()
 
 if(XGBOOSTER_BUILD_TESTS)
-  add_subdirectory(ut)
+  if(NOT (ANDROID OR IOS))
+    add_subdirectory(ut)
+  endif()
 endif()
+  
 
 ###################
 ##### install #####
