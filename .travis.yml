@@ -107,19 +107,20 @@ install:
   - export ANDROID_NDK_r10e="`pwd`/_ci/android-ndk-r10e"
 
 script:
-    - >
-    polly.py
+
+  - >
+  polly.py
     --toolchain ${TOOLCHAIN}
     --config ${CONFIG}
     --verbose
     --fwd
     HUNTER_CONFIGURATION_TYPES=${CONFIG}
-    ${TO_STRING}
+    XGBOOSTER_ADD_TO_STRING=${TO_STRING}
     --test
     --discard 10
     --tail 100
     ${INSTALL}
-
+    
 branches:
   except:
     - /^pr\..*/
