@@ -26,27 +26,48 @@ project(xgboostcpp VERSION 0.1.0) # WIP!
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# make sure these are before first hunter_add_package() call
 option(XGBOOSTER_BUILD_TESTS "Build tests" ON)
-option(XGBOOSTER_SERIALIZE_WITH_BOOST "Serialize w/ boost" ON)
-option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON)
+option(XGBOOSTER_BUILD_APPS "Build applications" ON)
+option(XGBOOSTER_SERIALIZE_WITH_BOOST "Serialize w/ boost" OFF) # hunter update
+option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON) # hunter update
+option(XGBOOSTER_ADD_TO_STRING "Add local to_string definitions" OFF) # for android
 
 ###################
 ## Dependencies ###
 ###################
 
-hunter_add_package(xgboost)
-find_package(xgboost CONFIG REQUIRED)
-
 if(XGBOOSTER_SERIALIZE_WITH_BOOST)
+  # boost
+  hunter_add_package(Boost COMPONENTS filesystem system serialization iostreams)
+  find_package(Boost CONFIG REQUIRED filesystem system serialization iostreams)
+
+  # boost-pba
   hunter_add_package(boost-pba)
   find_package(boost-pba CONFIG REQUIRED)
+
+  set(xgboostcpp_boost_libs
+    boost-pba::boost-pba
+    Boost::filesystem
+    Boost::system
+    Boost::serialization
+    Boost::iostreams
+    )
+    
 endif()
 
+# cereal
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
   hunter_add_package(cereal)
   find_package(cereal CONFIG REQUIRED)
 endif()
 
+# GTest
+if(XGBOOSTER_BUILD_TESTS)
+  enable_testing()
+  hunter_add_package(GTest)
+  find_package(GTest CONFIG REQUIRED)
+endif()
 
 if(NOT XCODE AND NOT MSVC) # We'll never have openmp on ios, and this test is really slow
   # This is only used for xgboost training and it will be removed once the

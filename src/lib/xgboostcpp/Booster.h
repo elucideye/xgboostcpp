@@ -154,6 +154,10 @@ public:
             this->SetCacheData(mats);
         }
     }
+    ~Booster()
+    {
+        
+    }
     inline const float *Pred(const DataMatrix &dmat, int option_mask, unsigned ntree_limit, bst_ulong *len)
     {
         this->CheckInitModel();
@@ -207,13 +211,10 @@ public:
             return &model_str[0];
         }
     }
-    
-    friend class boost::serialization::access;
-    template<class Archive> void serialize(Archive & ar, const unsigned int version)
+
+#if defined(XGBOOST_USE_BOOST) || defined(XGBOOST_USE_CEREAL)
+    template<class Archive> void serialize_(Archive & ar, const unsigned int version)
     {
-#if USE_XGBOOST_WITH_BOOST
-        ar & boost::serialization::base_object<learner::BoostLearner>(*this);
-#else
         if (Archive::is_loading::value)
         {
             ar & model_str;
@@ -225,8 +226,15 @@ public:
             GetModelRaw(&length); // uses internal model_str
             ar & model_str;
         }
-#endif
     }
+#if defined(XGBOOST_USE_BOOST)
+    template<class Archive> void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<learner::BoostLearner>(*this);
+        serialize_(ar, version);
+    }
+#endif
+#endif
     
     // temporal data to save model dump
     std::string model_str;
@@ -238,5 +246,19 @@ private:
 
 XGBOOSTCPP_END_NAMESPACE(wrapper)
 XGBOOSTCPP_END_NAMESPACE(xgboost)
+
+#include <cereal/types/polymorphic.hpp>
+#if defined(XGBOOST_USE_CEREAL)
+CEREAL_SPECIALIZE_FOR_ALL_ARCHIVES(xgboost::wrapper::Booster, cereal::specialization::non_member_serialize);
+namespace xgboost {
+namespace wrapper {
+template<class Archive>
+void serialize(Archive & ar, xgboost::wrapper::Booster &booster, const unsigned int version)
+{
+    booster.serialize_(ar, version);
+}
+} // namespace wrapper
+} // namespace xgboost
+#endif
 
 #endif // __xgboostcpp_Booster_h__

@@ -1,5 +1,5 @@
 /*!
-  @file   stdlib_string.h
+  @file   to_string.h
   @author David Hirvonen
   @brief  Declaration of missing stdlib routines in Android NDK.
 
@@ -8,8 +8,8 @@
 
 */
 
-#ifndef __xgboostcpp_stdlib_string_h__
-#define __xgboostcpp_stdlib_string_h__
+#ifndef __xgboostcpp_to_string_h__
+#define __xgboostcpp_to_string_h__
 
 #if ANDROID
 
@@ -81,6 +81,6 @@ inline long double stold(const std::string& s)
 }
 
 XGBOOSTCPP_END_NAMESPACE(std)
-#endif
 
+#endif // ANDROID
 #endif // __xgboostcpp_stdlib_string_h__

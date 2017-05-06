@@ -1,10 +1,16 @@
 ###############
-### cxxopts ###
+### cxxopts ### :: std::regex >= gcc 4.8
 ###############
 
-# std::regex >= gcc 4.8
 hunter_add_package(cxxopts)
 find_package(cxxopts CONFIG REQUIRED)
+
+################
+### boost qi ###
+################
+
+hunter_add_package(Boost COMPONENTS system)
+find_package(Boost CONFIG REQUIRED system)
 
 ######################
 ### test-xgbooster ###
@@ -13,6 +19,6 @@ find_package(cxxopts CONFIG REQUIRED)
 set(test_app test-xgbooster)
 
 add_executable(${test_app} test-xgbooster.cpp)
-target_link_libraries(${test_app} xgboostcpp cxxopts::cxxopts)
+target_link_libraries(${test_app} xgboostcpp cxxopts::cxxopts Boost::system)
 set_property(TARGET ${test_app} PROPERTY FOLDER "app/console")
 install(TARGETS ${test_app} DESTINATION bin)
