@@ -17,6 +17,7 @@ include("cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/ruslo/hunter/archive/v0.18.44.tar.gz"
     SHA1 "a78f0b377b8e53c038f12fc18b0c02564c4534c8"
+    FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
     )
 
 set(XGBOOSTCPP_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
@@ -25,25 +26,59 @@ project(xgboostcpp VERSION 0.1.0) # WIP!
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# make sure these are before first hunter_add_package() call
 option(XGBOOSTER_BUILD_TESTS "Build tests" ON)
-option(XGBOOSTER_SERIALIZE_WITH_BOOST "Serialize w/ boost" ON)
-option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON)
+option(XGBOOSTER_BUILD_APPS "Build applications" ON)
+option(XGBOOSTER_SERIALIZE_WITH_BOOST "Serialize w/ boost" OFF) # hunter update
+option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON) # hunter update
+option(XGBOOSTER_ADD_TO_STRING "Add local to_string definitions" OFF) # for android
 
 ###################
 ## Dependencies ###
 ###################
 
-hunter_add_package(xgboost)
-find_package(xgboost CONFIG REQUIRED)
-
 if(XGBOOSTER_SERIALIZE_WITH_BOOST)
+  # boost
+  hunter_add_package(Boost COMPONENTS filesystem system serialization iostreams)
+  find_package(Boost CONFIG REQUIRED filesystem system serialization iostreams)
+
+  # boost-pba
   hunter_add_package(boost-pba)
   find_package(boost-pba CONFIG REQUIRED)
+
+  set(xgboostcpp_boost_libs
+    boost-pba::boost-pba
+    Boost::filesystem
+    Boost::system
+    Boost::serialization
+    Boost::iostreams
+    )
+    
 endif()
 
+# cereal
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
   hunter_add_package(cereal)
   find_package(cereal CONFIG REQUIRED)
+endif()
+
+# GTest
+if(XGBOOSTER_BUILD_TESTS)
+  enable_testing()
+  hunter_add_package(GTest)
+  find_package(GTest CONFIG REQUIRED)
+endif()
+
+if(NOT XCODE AND NOT MSVC) # We'll never have openmp on ios, and this test is really slow
+  # This is only used for xgboost training and it will be removed once the
+  # xgboost interface is updated.
+  find_package(OpenMP)
+  if(OPENMP_FOUND)
+    # Set the globally for now (no clean cmake way to propagate OpenMP_EXE_LINKER_FLAGS
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+  endif()
 endif()
 
 ##############

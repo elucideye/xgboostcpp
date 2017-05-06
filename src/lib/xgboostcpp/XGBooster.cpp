@@ -8,6 +8,8 @@
 
 */
 
+#include "xgboostcpp/to_string.h" // for android std additions
+
 #include "xgboostcpp/XGBooster.h"
 #include "xgboostcpp/XGBoosterImpl.h"
 
