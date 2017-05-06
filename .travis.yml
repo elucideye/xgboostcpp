@@ -108,8 +108,9 @@ install:
 
 script:
 
+  # optional to_string.h 
   - >
-  polly.py
+    polly.py
     --toolchain ${TOOLCHAIN}
     --config ${CONFIG}
     --verbose
@@ -120,7 +121,7 @@ script:
     --discard 10
     --tail 100
     ${INSTALL}
-    
+
 branches:
   except:
     - /^pr\..*/
