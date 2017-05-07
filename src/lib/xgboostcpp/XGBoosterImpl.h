@@ -43,6 +43,8 @@ public:
         init();
     }
 
+    ~Impl() {}
+    
     void init()
     {
         m_booster = std::make_shared<xgboost::wrapper::Booster>();
