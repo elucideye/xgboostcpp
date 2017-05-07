@@ -13,7 +13,9 @@
 
 #include "xgboostcpp/xgboostcpp_def.h"
 
-#include <boost/serialization/export.hpp>
+#if defined(XGBOOST_USE_BOOST)
+#  include <boost/serialization/export.hpp>
+#endif
 
 #include <vector>
 #include <memory>

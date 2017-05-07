@@ -2,29 +2,36 @@ set(xgboostcpp_SRCS
   Booster.h
   XGBooster.cpp
   XGBooster.h
-  XGBoosterIOArchiveBoost.cpp
-  XGBoosterIOArchiveCereal.cpp
   XGBoosterImpl.h
-  )
-
-add_library(xgboostcpp "${xgboostcpp_SRCS}")
-target_link_libraries(xgboostcpp xgboost::xgboost)
+  xgboostcpp_def.h
+  xgboostcpp_serialize.h
+  to_string.h
+)
 
 if(XGBOOSTER_SERIALIZE_WITH_BOOST)
-  target_link_libraries(xgboostcpp boost-pba::boost-pba)
+  list(APPEND xgboostcpp_SRCS XGBoosterIOArchiveBoost.cpp)
 endif()
 
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
-  target_link_libraries(xgboostcpp cereal::cereal)
+  list(APPEND xgboostcpp_SRCS XGBoosterIOArchiveCereal.cpp)
 endif()
 
-# USE_XGBOOST_WITH_BOOST
-if(XGBOOSTER_SERIALIZE_WITH_BOOST OR XGBOOSTER_SERIALIZE_WITH_CEREAL)
-  set(use_xgboost_with_boost 1)
-else()
-  set(use_xgboost_with_boost 0)
+add_library(xgboostcpp "${xgboostcpp_SRCS}")
+target_link_libraries(xgboostcpp PRIVATE xgboost::xgboost)
+
+if(XGBOOSTER_SERIALIZE_WITH_BOOST)
+  target_link_libraries(xgboostcpp PRIVATE ${xgboostcpp_boost_libs})
+  target_compile_definitions(xgboostcpp PUBLIC XGBOOSTER_SERIALIZE_WITH_BOOST=1)
 endif()
-target_compile_definitions(xgboostcpp PUBLIC USE_XGBOOST_WITH_BOOST=${use_xgboost_with_boost})
+
+if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
+  target_link_libraries(xgboostcpp PRIVATE cereal::cereal)
+  target_compile_definitions(xgboostcpp PUBLIC XGBOOSTER_SERIALIZE_WITH_CEREAL=1)
+endif()
+
+# Note: boost will optionally set
+# * XGBOOST_USE_BOOST=1
+# * XGBOOST_USE_CEREAL=1
 
 set_property(TARGET xgboostcpp PROPERTY FOLDER "libs")
 
@@ -44,6 +51,13 @@ if(NOT is_ios)
     SOVERSION "${hunter_sandbox_VERSION_MAJOR}"
     )
 endif()
+
+if(XGBOOSTER_BUILD_TESTS)
+  if(NOT (ANDROID OR IOS))
+    add_subdirectory(ut)
+  endif()
+endif()
+  
 
 ###################
 ##### install #####
@@ -86,3 +100,5 @@ install(
   "${CMAKE_BINARY_DIR}/lib/xgboostcpp_export.h"
   DESTINATION "${include_install_dir}/xgboostcpp/"
   )
+
+
