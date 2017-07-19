@@ -20,14 +20,19 @@ int main(int argc, char **argv)
     // ############################
     
     std::string sInput, sModel, sOutput, sArchive;
+
+#if !defined(XGBOOSTER_DO_LEAN)
     bool doTrain = false;
+#endif
 
     cxxopts::Options options("test-xgboostcpp", "Command line interface for xgboostcpp.");
     options.add_options()
         ("i,input", "Input CSV file", cxxopts::value<std::string>(sInput))
         ("o,output", "Output directory", cxxopts::value<std::string>(sOutput))
         ("m,model", "Model archive: *.cpb or *.pba.z", cxxopts::value<std::string>(sModel))
+#if !defined(XGBOOSTER_DO_LEAN)
         ("t,train", "Training mode.", cxxopts::value<bool>(doTrain))
+#endif
         ("h,help", "Print help message");
     
     options.parse(argc, argv);
@@ -53,6 +58,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
+#if !defined(XGBOOSTER_DO_LEAN)    
     if(doTrain)
     {
         xgboostcpp::XGBooster::Recipe params; // default....
@@ -60,6 +66,7 @@ int main(int argc, char **argv)
         return xgboost_train(sInput, sModel, params);
     }
     else
+#endif
     {
         std::ostream* os = &std::cout;
         std::ofstream ofs;
@@ -116,7 +123,7 @@ bool loadCSV(Iterator first, Iterator last, Matrix32f &x, Vector32f &y)
     bool r = boost::spirit::qi::phrase_parse(first, last, +(qi::float_ % ','), qi::space, x);
     if(r)
     {
-        x.resize(x.size());
+        x.resize(y.size());
         for(int i = 0; i < x.size(); i++)
         {
             y[i] = x[i].back();
@@ -168,6 +175,7 @@ int xgboost_test(const std::string &input, const std::string &model, std::ostrea
     return 0;
 }
 
+#if !defined(XGBOOSTER_DO_LEAN)
 int xgboost_train(const std::string &input, const std::string &model, xgboostcpp::XGBooster::Recipe &params)
 {
     Matrix32f x;
@@ -183,3 +191,4 @@ int xgboost_train(const std::string &input, const std::string &model, xgboostcpp
         
     return 0;
 }
+#endif

@@ -52,12 +52,12 @@ if(NOT is_ios)
     )
 endif()
 
-if(XGBOOSTER_BUILD_TESTS)
+# We can't run training if XGBOOSTER_DO_LEAN==ON
+if(XGBOOSTER_BUILD_TESTS AND NOT XGBOOSTER_DO_LEAN)
   if(NOT (ANDROID OR IOS))
     add_subdirectory(ut)
   endif()
 endif()
-  
 
 ###################
 ##### install #####
