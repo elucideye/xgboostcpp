@@ -20,5 +20,10 @@ set(test_app test-xgbooster)
 
 add_executable(${test_app} test-xgbooster.cpp)
 target_link_libraries(${test_app} xgboostcpp cxxopts::cxxopts Boost::system)
+
+if(XGBOOSTER_DO_LEAN)
+  target_compile_definitions(${test_app} PUBLIC XGBOOSTER_DO_LEAN=1)
+endif()
+
 set_property(TARGET ${test_app} PROPERTY FOLDER "app/console")
 install(TARGETS ${test_app} DESTINATION bin)
