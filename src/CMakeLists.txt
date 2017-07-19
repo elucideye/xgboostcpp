@@ -1,3 +1,19 @@
+## Customize linker flags
+include(CheckCCompilerFlag)
+if(NOT MSVC)
+  check_c_compiler_flag("-Wl,-dead_strip" FLAG_dead_strip)
+  if(NOT FLAG_dead_strip)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--gc-sections")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--gc-sections,--icf=safe")
+  else()
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-dead_strip")
+    set(CMAKE_EXE_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-dead_strip")
+  endif()
+endif()
+
+# Experimental reductions
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fomit-frame-pointer -funswitch-loops -finline-limit=300 -finline-limit=64")
+
 ###############
 ### xgboost ###
 ###############

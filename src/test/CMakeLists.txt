@@ -25,5 +25,8 @@ if(XGBOOSTER_DO_LEAN)
   target_compile_definitions(${test_app} PUBLIC XGBOOSTER_DO_LEAN=1)
 endif()
 
+# Enable this option for testing lto behavior
+# target_compile_definitions(${test_app} PUBLIC XGBOOSTER_DO_LEAN=1)
+
 set_property(TARGET ${test_app} PROPERTY FOLDER "app/console")
 install(TARGETS ${test_app} DESTINATION bin)
