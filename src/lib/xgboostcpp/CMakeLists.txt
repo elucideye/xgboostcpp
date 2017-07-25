@@ -8,10 +8,6 @@ set(xgboostcpp_SRCS
   to_string.h
 )
 
-if(XGBOOSTER_SERIALIZE_WITH_BOOST)
-  list(APPEND xgboostcpp_SRCS XGBoosterIOArchiveBoost.cpp)
-endif()
-
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
   list(APPEND xgboostcpp_SRCS XGBoosterIOArchiveCereal.cpp)
 endif()
@@ -19,18 +15,12 @@ endif()
 add_library(xgboostcpp "${xgboostcpp_SRCS}")
 target_link_libraries(xgboostcpp PRIVATE xgboost::xgboost)
 
-if(XGBOOSTER_SERIALIZE_WITH_BOOST)
-  target_link_libraries(xgboostcpp PRIVATE ${xgboostcpp_boost_libs})
-  target_compile_definitions(xgboostcpp PUBLIC XGBOOSTER_SERIALIZE_WITH_BOOST=1)
-endif()
-
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)
   target_link_libraries(xgboostcpp PRIVATE cereal::cereal)
   target_compile_definitions(xgboostcpp PUBLIC XGBOOSTER_SERIALIZE_WITH_CEREAL=1)
 endif()
 
 # Note: boost will optionally set
-# * XGBOOST_USE_BOOST=1
 # * XGBOOST_USE_CEREAL=1
 
 set_property(TARGET xgboostcpp PROPERTY FOLDER "libs")
@@ -52,12 +42,12 @@ if(NOT is_ios)
     )
 endif()
 
-if(XGBOOSTER_BUILD_TESTS)
+# We can't run training if XGBOOSTER_DO_LEAN==ON
+if(XGBOOSTER_BUILD_TESTS AND NOT XGBOOSTER_DO_LEAN)
   if(NOT (ANDROID OR IOS))
     add_subdirectory(ut)
   endif()
 endif()
-  
 
 ###################
 ##### install #####
