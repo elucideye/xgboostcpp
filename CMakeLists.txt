@@ -10,51 +10,38 @@
 
 # TODO: Add a more recent xgboost to hunter
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.3)
 
 ### Hunter snapshot that will be used ###
 include("cmake/HunterGate.cmake")
+
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.18.44.tar.gz"
-    SHA1 "a78f0b377b8e53c038f12fc18b0c02564c4534c8"
-    FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
-    )
+  URL "https://github.com/ruslo/hunter/archive/v0.19.40.tar.gz"
+  SHA1 "dd4850329b2e5ed91684f964f8bbc29328898d56"  
+  FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
+  )
 
 set(XGBOOSTCPP_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 project(xgboostcpp VERSION 0.1.0) # WIP!
+
+if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+  set(CMAKE_POLICY_DEFAULT_CMP0069 NEW) # for 3rd parties added by add_subdirectory
+  cmake_policy(SET CMP0069 NEW)
+endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # make sure these are before first hunter_add_package() call
 option(XGBOOSTER_BUILD_TESTS "Build tests" ON)
 option(XGBOOSTER_BUILD_APPS "Build applications" ON)
-option(XGBOOSTER_SERIALIZE_WITH_BOOST "Serialize w/ boost" OFF) # hunter update
 option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON) # hunter update
 option(XGBOOSTER_ADD_TO_STRING "Add local to_string definitions" OFF) # for android
+option(XGBOOSTER_DO_LEAN "Build for prediction only (size reduction)" OFF) 
 
 ###################
 ## Dependencies ###
 ###################
-
-if(XGBOOSTER_SERIALIZE_WITH_BOOST)
-  # boost
-  hunter_add_package(Boost COMPONENTS filesystem system serialization iostreams)
-  find_package(Boost CONFIG REQUIRED filesystem system serialization iostreams)
-
-  # boost-pba
-  hunter_add_package(boost-pba)
-  find_package(boost-pba CONFIG REQUIRED)
-
-  set(xgboostcpp_boost_libs
-    boost-pba::boost-pba
-    Boost::filesystem
-    Boost::system
-    Boost::serialization
-    Boost::iostreams
-    )
-    
-endif()
 
 # cereal
 if(XGBOOSTER_SERIALIZE_WITH_CEREAL)

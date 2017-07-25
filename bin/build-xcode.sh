@@ -1,14 +1,15 @@
 #!/bin/bash
 
+TOOLCHAIN=xcode
+
+CONFIG=MinSizeRel
+
 ARGS=(
     --verbose
-    --config Release    
-    --fwd HUNTER_CONFIGURATION_TYPES=Release
-    XGBOOSTER_SERIALIZE_WITH_BOOST=OFF
+    --config ${CONFIG}
+    --fwd HUNTER_CONFIGURATION_TYPES=${CONFIG}
     XGBOOSTER_SERIALIZE_WITH_CEREAL=ON
     --jobs 8
 )
 
-export HUNTER_ROOT=${HOME}/devel/ruslo/hunter
-build.py --toolchain xcode ${ARGS[@]} --reconfig --install --open --test
-
+build.py --toolchain ${TOOLCHAIN} ${ARGS[@]} --reconfig --install --open --test

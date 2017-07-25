@@ -106,35 +106,6 @@ TEST(XGBoostCPPTest, BostonHousingRegression)
 }
 
 // ##############
-// ### BOOST ####
-// ##############
-
-#if defined(XGBOOSTER_SERIALIZE_WITH_BOOST)
-
-TEST(XGBoostCPPTest, BostonHousingRegressionBoost)
-{
-    TestHarness tester;
-    
-    std::string filename = "xgb.pba.z";
-    
-    tester.writer = [&](std::shared_ptr<xgboostcpp::XGBooster> &xgb)
-    {
-        save_pba_z(filename, xgb);
-    };
-    
-    tester.reader = [&](std::shared_ptr<xgboostcpp::XGBooster> &xgb)
-    {
-        load_pba_z(filename, xgb);
-    };
-    
-    auto mse = tester();
-    std::cout << "MSE (boost): " << mse << std::endl;
-    ASSERT_LT(mse, 6.6213); // compare to sci-kit example 6.6213
-}
-
-#endif // XGBOOSTER_SERIALIZE_WITH_BOOST
-
-// ##############
 // ### CEREAL ###
 // ##############
 
