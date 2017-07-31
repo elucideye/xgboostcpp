@@ -19,7 +19,7 @@ HunterGate(
   URL "https://github.com/ruslo/hunter/archive/v0.19.54.tar.gz"
   SHA1 "75c7e5841cee90957d2e3866f6bd5d6dfe515dde"  
   FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
-  )
+)
 
 set(XGBOOSTCPP_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
