@@ -16,8 +16,8 @@ cmake_minimum_required(VERSION 3.3)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-  URL "https://github.com/ruslo/hunter/archive/v0.19.40.tar.gz"
-  SHA1 "dd4850329b2e5ed91684f964f8bbc29328898d56"  
+  URL "https://github.com/ruslo/hunter/archive/v0.19.54.tar.gz"
+  SHA1 "75c7e5841cee90957d2e3866f6bd5d6dfe515dde"  
   FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
   )
 
@@ -36,7 +36,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 option(XGBOOSTER_BUILD_TESTS "Build tests" ON)
 option(XGBOOSTER_BUILD_APPS "Build applications" ON)
 option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON) # hunter update
-option(XGBOOSTER_ADD_TO_STRING "Add local to_string definitions" OFF) # for android
 option(XGBOOSTER_DO_LEAN "Build for prediction only (size reduction)" OFF) 
 
 ###################
