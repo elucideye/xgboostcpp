@@ -36,7 +36,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 option(XGBOOSTER_BUILD_TESTS "Build tests" ON)
 option(XGBOOSTER_BUILD_APPS "Build applications" ON)
 option(XGBOOSTER_SERIALIZE_WITH_CEREAL "Serialize w/ cereal" ON) # hunter update
-option(XGBOOSTER_ADD_TO_STRING "Add local to_string definitions" OFF) # for android
 option(XGBOOSTER_DO_LEAN "Build for prediction only (size reduction)" OFF) 
 
 ###################
