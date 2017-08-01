@@ -13,8 +13,7 @@ This is a work in progress, and is posted initially as a reference for using the
 
 
 [travis_status]: https://travis-ci.org/elucideye/xgboostcpp.svg?branch=master
-[travis_builds]: https://travis-ci.com/elucideye/xgboostcpp
-
+[travis_builds]: https://travis-ci.org/elucideye/xgboostcpp
 
 [appveyor_status]: https://ci.appveyor.com/api/projects/status/vh2hu8q7s17p00et?svg=true
 [appveyor_builds]: https://ci.appveyor.com/api/projects/elucideye/xgboostcpp
