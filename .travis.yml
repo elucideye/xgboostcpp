@@ -40,6 +40,8 @@ matrix:
   include:
     # Linux {
     - os: linux
+      env: CONFIG=Release TOOLCHAIN=libcxx INSTALL=--strip TO_STRING=OFF    
+    - os: linux
       env: CONFIG=Release TOOLCHAIN=gcc-4-8-pic-hid-sections INSTALL=--strip TO_STRING=OFF
     # - os: linux
     #   env: CONFIG=Debug TOOLCHAIN=gcc-4-8-pic-hid-sections INSTALL=--strip TO_STRING=OFF
