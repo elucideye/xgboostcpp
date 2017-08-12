@@ -28,6 +28,7 @@ addons:
       # https://github.com/travis-ci-tester/travis-test-clang-cxx-11
       - libstdc++-4.8-dev
 
+      - libc++-dev
       - libc++abi-dev
 
       # https://github.com/travis-ci-tester/travis-test-gcc-cxx-11
