@@ -16,14 +16,14 @@ cmake_minimum_required(VERSION 3.3)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
-  URL "https://github.com/ruslo/hunter/archive/v0.19.54.tar.gz"
-  SHA1 "75c7e5841cee90957d2e3866f6bd5d6dfe515dde"  
+  URL "https://github.com/ruslo/hunter/archive/v0.19.68.tar.gz"
+  SHA1 "ad0d042d8ec56a3c6a4bda1e657f1f65b494ab12"
   FILEPATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/config.cmake"    
-  )
+)
 
 set(XGBOOSTCPP_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-project(xgboostcpp VERSION 0.1.0) # WIP!
+project(xgboostcpp VERSION 0.1.1)
 
 if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
   set(CMAKE_POLICY_DEFAULT_CMP0069 NEW) # for 3rd parties added by add_subdirectory
