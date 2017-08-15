@@ -5,3 +5,5 @@ set(XGBOOST_CMAKE_ARGS
   )
 
 hunter_config(xgboost GIT_SUBMODULE "src/3rdparty/xgboost" CMAKE_ARGS ${XGBOOST_CMAKE_ARGS})
+
+hunter_config(cereal GIT_SUBMODULE "src/3rdparty/cereal" CMAKE_ARGS JUST_INSTALL_CEREAL=ON)
