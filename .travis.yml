@@ -93,10 +93,11 @@ before_install:
   - git submodule update --init --recursive --quiet
 
   # Use a recent clang
-  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 380; fi
-  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380; fi
+  # - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 380; fi
+  # - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380; fi
 
-  - ls /usr/bin/
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then mkdir -p latest-clang-symlinks && ln -s /usr/bin/clang-3.8 latest-clang-symlinks/clang && ln -s /usr/bin/clang++-3.8 latest-clang-symlinks/clang++ && export PATH="$PWD/latest-clang-symlinks:$PATH"; fi
+
 install:
   # Info about OS
   - uname -a
