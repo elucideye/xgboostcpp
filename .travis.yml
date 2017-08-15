@@ -32,6 +32,9 @@ addons:
       - clang-3.8
       - libc++-dev
       - libc++abi-dev
+      - libclang-3.8-dev
+      - libclang-common-3.8-dev
+      - libclang1-3.8
 
       # https://github.com/travis-ci-tester/travis-test-gcc-cxx-11
       - g++-4.8
@@ -93,6 +96,7 @@ before_install:
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 380; fi
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380; fi
 
+  - ls /usr/bin/
 install:
   # Info about OS
   - uname -a
