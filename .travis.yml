@@ -28,6 +28,8 @@ addons:
       # https://github.com/travis-ci-tester/travis-test-clang-cxx-11
       - libstdc++-4.8-dev
 
+      - clang-3.8
+      - clang++3.8
       - libc++-dev
       - libc++abi-dev
 
@@ -86,6 +88,10 @@ git:
 before_install:
   # Add '--quiet' to avoid leaking the token to logs
   - git submodule update --init --recursive --quiet
+
+  # Use a recent clang
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 380; fi
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380; fi
 
 install:
   # Info about OS
