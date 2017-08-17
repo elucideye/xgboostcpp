@@ -18,6 +18,7 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-3.8
     packages:
       - python3
 
@@ -27,6 +28,13 @@ addons:
 
       # https://github.com/travis-ci-tester/travis-test-clang-cxx-11
       - libstdc++-4.8-dev
+
+      - clang-3.8
+      - libc++-dev
+      - libc++abi-dev
+      - libclang-3.8-dev
+      - libclang-common-3.8-dev
+      - libclang1-3.8
 
       # https://github.com/travis-ci-tester/travis-test-gcc-cxx-11
       - g++-4.8
@@ -39,6 +47,8 @@ addons:
 matrix:
   include:
     # Linux {
+    - os: linux
+      env: CONFIG=Release TOOLCHAIN=libcxx INSTALL=--strip TO_STRING=OFF    
     - os: linux
       env: CONFIG=Release TOOLCHAIN=gcc-4-8-pic-hid-sections INSTALL=--strip TO_STRING=OFF
     # - os: linux
@@ -81,6 +91,12 @@ git:
 before_install:
   # Add '--quiet' to avoid leaking the token to logs
   - git submodule update --init --recursive --quiet
+
+  # Use a recent clang
+  # - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 380; fi
+  # - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380; fi
+
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then mkdir -p latest-clang-symlinks && ln -s /usr/bin/clang-3.8 latest-clang-symlinks/clang && ln -s /usr/bin/clang++-3.8 latest-clang-symlinks/clang++ && export PATH="$PWD/latest-clang-symlinks:$PATH"; fi
 
 install:
   # Info about OS
