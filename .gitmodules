@@ -1,3 +1,0 @@
-[submodule "src/3rdparty/xgboost"]
-	path = src/3rdparty/xgboost
-	url = https://github.com/hunter-packages/xgboost.git
